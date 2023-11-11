@@ -53,7 +53,7 @@ def report(action: str,current_time: datetime, data: str):
 def perform_action(action):
     
     print (f"{bcolors.WARNING}Starting to perform action: {bcolors.ENDC}")
-    driver = webdriver.Firefox() # executable_path="./drivers/geckodriver"
+    driver = webdriver.Firefox()
     driver.get('https://'+var_domain)
     driver.implicitly_wait(delay_time)
     username = driver.find_element(By.XPATH, "//input[contains(@id, 'username') and @name='username']")
@@ -67,6 +67,7 @@ def perform_action(action):
     driver.implicitly_wait(delay_time)
 
     print (f"{bcolors.FAIL}ENTERING CREDENTIALS.. {bcolors.ENDC}")
+    
     # Click Action of the Submit Button on the page
     
     SUBMIT_BUTTON_XPATH = '//button[contains(@id, "submit") and @class="btn"]'
@@ -74,16 +75,10 @@ def perform_action(action):
     button = driver.find_element("xpath",SUBMIT_BUTTON_XPATH)
     button.click()
 
-
-    # Get the html element of the button reboot of type = submit
-
-    SUBMIT_BUTTON_XPATH = '//button[contains(@id, "submit") and @class="btn"]'
     
     LOGOUT_BUTTON_XPATH = '//a[contains(@class, "wp-block-button__link") and text() ="Log out"]'
     
     LIST_HTML_TAGS = ["h1", "h2", "h3", "h4", "h5", "strong", "span"]
-
-
 
     if(action == "logout"):
         current_date = datetime.datetime.now()
@@ -91,7 +86,6 @@ def perform_action(action):
         driver.implicitly_wait(delay_time)
 
         print (f"{bcolors.FAIL}Logging Out.. {bcolors.ENDC}")
-        # Click Action of the Submit Button on the page
 
         button = driver.find_element("xpath",LOGOUT_BUTTON_XPATH)
         button.click()
@@ -112,7 +106,7 @@ def perform_action(action):
             data = driver.find_element("xpath",f"//{tag}").get_attribute("innerHTML")
             
             if len(data) < 0:
-                break # vuln 1
+                break
             else:
                 report(action,current_date,data)
                    
@@ -120,9 +114,6 @@ def perform_action(action):
     driver.implicitly_wait(delay_time)
     #Close browser
     driver.quit()
-
-    # Get current time for the log
-    
 
     print(f"{bcolors.OKGREEN} Finished performing {action}.... {bcolors.ENDC}")
     
